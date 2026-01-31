@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: "class",
+    darkMode: false,
     content: [
       "./index.html",
       "./src/**/*.{js,ts,jsx,tsx}",
@@ -9,10 +9,14 @@ export default {
       extend: {
         colors: {
           primary: "#2bee6c",
-          "background-light": "#f6f8f6",
-          "background-dark": "#102216",
-          "text-main": "#111813",
-          "text-sub": "#61896f",
+          background: {
+            light: "#f6f8f6",
+            dark: "#102216",
+          },
+          text: {
+            main: "#111813",
+            sub: "#61896f",
+          },
         },
         fontFamily: {
           display: ["Newsreader", "serif"],
@@ -27,5 +31,5 @@ export default {
       },
     },
     plugins: [],
-  }
+}
   
