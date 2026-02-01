@@ -1,16 +1,17 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const Nav = () => {
   return (
     <>
         {/*<!-- Desktop Nav -->*/}
         <nav className="hidden md:flex items-center gap-6">
-          <a
+          <NavLink
             className="text-sm font-medium text-text-main hover:text-primary transition-colors "
-            href="#"
+            to="/allProducts"
           >
-            New Arrivals
-          </a>
+            All Products
+          </NavLink>
           {/*<!-- Leaf Separator -->*/}
           <span className="text-primary/60 0">
             <svg
@@ -23,12 +24,12 @@ const Nav = () => {
               <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.66-.51c.48-.37 3.63-2.81 7.23-5.22C17.75 13.5 21.5 8.5 21.5 8.5L22 8l-.5-.5C21.5 7.5 17 8 17 8zM3.5 4.5l.5.5c.5.5 4.5 5 9.5 5C9.69 7.84 6.54 3.73 6.06 3.36L5.4 2.85 3.5 4.5z"></path>
             </svg>
           </span>
-          <a
+          <NavLink
             className="text-sm font-medium text-text-main hover:text-primary transition-colors "
-            href="#"
+            to="/allProducts/vestidos"
           >
-            Dresses
-          </a>
+            Vestidos
+          </NavLink>
           {/*<!-- Leaf Separator -->*/}
           <span className="text-primary/60 ">
             <svg
@@ -41,12 +42,12 @@ const Nav = () => {
               <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.66-.51c.48-.37 3.63-2.81 7.23-5.22C17.75 13.5 21.5 8.5 21.5 8.5L22 8l-.5-.5C21.5 7.5 17 8 17 8zM3.5 4.5l.5.5c.5.5 4.5 5 9.5 5C9.69 7.84 6.54 3.73 6.06 3.36L5.4 2.85 3.5 4.5z"></path>
             </svg>
           </span>
-          <a
+          <NavLink
             className="text-sm font-medium text-text-main hover:text-primary transition-colors "
-            href="#"
+            to="/allProducts/blusas"
           >
-            Accessories
-          </a>
+            Blusas
+          </NavLink>
           {/*<!-- Leaf Separator -->*/}
           <span className="text-primary/60 ">
             <svg
@@ -59,12 +60,12 @@ const Nav = () => {
               <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.66-.51c.48-.37 3.63-2.81 7.23-5.22C17.75 13.5 21.5 8.5 21.5 8.5L22 8l-.5-.5C21.5 7.5 17 8 17 8zM3.5 4.5l.5.5c.5.5 4.5 5 9.5 5C9.69 7.84 6.54 3.73 6.06 3.36L5.4 2.85 3.5 4.5z"></path>
             </svg>
           </span>
-          <a
+          <NavLink
             className="text-sm font-medium text-text-main hover:text-primary transition-colors "
-            href="#"
+            to="/about"
           >
-            Journal
-          </a>
+            Nosotros
+          </NavLink>
         </nav>
     </>
   )
