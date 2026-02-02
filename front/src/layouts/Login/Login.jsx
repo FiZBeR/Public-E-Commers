@@ -1,9 +1,10 @@
 import React from 'react'
+import Auth from '../../features/auth/pages/Auth'
 
 const Login = () => {
   return (
     <div>
-      El Login ira Aca
+      <Auth/>
     </div>
   )
 }

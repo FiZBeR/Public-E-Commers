@@ -1,9 +1,10 @@
 import React from 'react'
+import Orders from '../../features/orders/pages/Orders'
 
 const shoppingCart = () => {
   return (
     <div>
-      El carrito de compras
+      <Orders/>
     </div>
   )
 }
