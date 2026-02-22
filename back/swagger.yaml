@@ -1,0 +1,329 @@
+openapi: 3.0.0
+info:
+  title: Public E-Commerce API
+  version: 1.0.0
+  description: API documentation for the E-Commerce backend.
+servers:
+  - url: http://localhost:3900
+    description: Local Server
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        referencia:
+          type: string
+        categoria:
+          type: string
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        precio:
+          type: number
+        tallas:
+          type: object
+          properties:
+            S: { type: number }
+            M: { type: number }
+            L: { type: number }
+            XL: { type: number }
+            U: { type: number }
+        colores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variation'
+        estampados:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variation'
+    Variation:
+      type: object
+      properties:
+        codigo:
+          type: string
+        imagenRef:
+          type: string
+        imagenes:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              orden:
+                type: number
+    CarruselItem:
+      type: object
+      properties:
+        referencia:
+          type: string
+        tipo:
+          type: string
+        codigo:
+          type: string
+          nullable: true
+
+paths:
+  /admin/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, username]
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User created successfully
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: token=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              example: { "message": "user created successfully" }
+        'timeout':
+          description: Request hangs infinite due to unhandled promise rejection in catch block without a res return
+
+  /admin/login:
+    post:
+      summary: Login user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: token=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              example: { "message": "Welcome" }
+        '400':
+          description: Bad Request (User not found or Incorrect password)
+          content:
+            application/json:
+              example: { "message": "User not found" }
+        'timeout':
+          description: Request hangs down on internal error inside the catch block
+
+  /admin/logout:
+    post:
+      summary: Logout user
+      tags: [Auth]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: { "message": "Bye" }
+
+  /admin/products/all:
+    get:
+      summary: Get all products
+      tags: [Products]
+      responses:
+        '200':
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /admin/products/one/{id}:
+    get:
+      summary: Get a product by ID
+      tags: [Products]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product found
+        '401':
+          description: No token, authorization denied
+        '403':
+          description: Invalid token
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error del servidor
+
+  /admin/products/create:
+    post:
+      summary: Create a product
+      tags: [Products]
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Created successfully
+        '400':
+          description: Validation error from Joi
+        '401':
+          description: No token, authorization denied
+        '500':
+          description: Server Error
+
+  /admin/products/update/{id}:
+    put:
+      summary: Update a product
+      tags: [Products]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updated successfully
+        '400':
+          description: Validation error
+        '401':
+          description: No token, authorization denied
+        '404':
+          description: Not found
+        '500':
+          description: Server Error
+
+  /admin/products/delete/{id}:
+    delete:
+      summary: Delete a product
+      tags: [Products]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted successfully
+        '401':
+          description: No token, authorization denied
+        '500':
+          description: Error on delete / Not found
+
+  /admin/products/sale:
+    post:
+      summary: Process Sale
+      tags: [Products]
+      responses:
+        'timeout':
+          description: Handles nothing, hangs infinitely since no response is returned.
+
+  /admin/carrusel/products/carrusel:
+    get:
+      summary: Get carrusel items
+      tags: [Carrusel]
+      responses:
+        '200':
+          description: Successfully retrieved
+          content:
+            application/json:
+              example: { "carruselItems": [] }
+
+  /admin/carrusel/products/create/item:
+    post:
+      summary: Create or update carrusel item
+      tags: [Carrusel]
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productos:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CarruselItem'
+      responses:
+        '200':
+          description: Created successfully
+        '400':
+          description: Validation Error
+        '401':
+          description: No token
+        '500':
+          description: Server error
+
+  /admin/carrusel/products/delete/item:
+    delete:
+      summary: Delete carrusel item
+      tags: [Carrusel]
+      security:
+        - cookieAuth: []
+      responses:
+        '401':
+          description: No token
+        'timeout':
+          description: Empty method body, request hangs infinitely

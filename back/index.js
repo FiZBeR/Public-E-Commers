@@ -1,4 +1,9 @@
-const {connection} = require("./database/connection");
+/**
+ * @file index.js
+ * @description Main application entry point for the backend API.
+ * Initializes the Express server, connects to MongoDB, configures middlewares (CORS, Morgan, parsers), and sets up routing endpoints.
+ */
+const { connection } = require("./database/connection");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -18,7 +23,7 @@ const port = 3900;
 //Middlewares
 app.use(cors()); //Configurar CORS
 app.use(express.json()); //recibir datos con contentType app/json
-app.use(express.urlencoded({extended: false})); //Obtener los datos en x-www-form
+app.use(express.urlencoded({ extended: false })); //Obtener los datos en x-www-form
 app.use(morgan('dev')); //Muestra un resumen de la peticion HTTP por consola
 app.use(cookieParser()); //Permite ver las cookies por consola
 app.use("/imagenes", express.static(path.join(__dirname, "imagenes")));

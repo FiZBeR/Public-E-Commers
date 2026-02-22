@@ -1,5 +1,10 @@
 const Joi = require("joi");
 
+/**
+ * @constant productJoiSchema
+ * @description Joi validation schema for strictly validating the payload when creating a new product.
+ * Ensures references, categories, names, prices, tallas, colores, and estampados are provided and formatted correctly.
+ */
 const productJoiSchema = Joi.object({
   referencia: Joi.string().trim().min(1).required().messages({
     'string.base': 'La referencia debe ser texto.',
@@ -56,6 +61,11 @@ const productJoiSchema = Joi.object({
 
 });
 
+/**
+ * @constant updateProductJoiSchema
+ * @description Joi validation schema for validating partial updates to an existing product.
+ * Makes fields optional but enforces correct types and formats for the ones that are provided. Requires at least one field (`.min(1)`).
+ */
 const updateProductJoiSchema = Joi.object({
   referencia: Joi.string().trim().min(1).optional().messages({
     'string.base': 'La referencia debe ser texto.',
